@@ -101,7 +101,6 @@ Bob   → bob / bob123
 ---
 ## 🖥️ Project Outputs
 
-### 🔐 Attack Simulation
 
 <p align="center">
   <img src="outputs/1.png" width="32%">
@@ -109,7 +108,7 @@ Bob   → bob / bob123
   <img src="outputs/3.png" width="32%">
 </p>
 
-### 🛡️ Security & Protection
+### 🔐 Attack Simulation
 
 <p align="center">
   <img src="outputs/4.png" width="70%">
