@@ -1,0 +1,71 @@
+.user-panel {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  background: var(--card-2);
+}
+.user-panel h3 {
+  margin-top: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.copy-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.before-after {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 16px;
+  align-items: center;
+}
+@media (max-width: 700px) {
+  .before-after { grid-template-columns: 1fr; }
+}
+.ba-card {
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 16px;
+}
+.ba-card.before { background: rgba(34,197,94,0.06); }
+.ba-card.after { background: rgba(239,68,68,0.06); }
+.ba-arrow {
+  text-align: center;
+  color: var(--text-2);
+  font-size: 0.8rem;
+}
+
+.step-list {
+  counter-reset: step;
+  list-style: none;
+  padding: 0;
+}
+.step-list li {
+  counter-increment: step;
+  padding: 8px 0 8px 34px;
+  position: relative;
+  font-size: 0.9rem;
+  border-bottom: 1px solid var(--border);
+}
+.step-list li:last-child { border-bottom: none; }
+.step-list li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Security Result — SocialShield Demo</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/attack.css" />
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html" class="brand">🛡 SocialShield <span class="brand-badge">Demo</span></a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="attack-demo.html">Attack Demo</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card fade-in">
+      <h1 class="mt-0" id="mainTitle">🚨 SESSION IDENTITY COMPROMISED</h1>
+      <p id="mainMsg" class="text-2">
+        The application accepted a previously valid demo session. As a result, User B is now
+        treated as User A. This demonstrates why secure session management is important.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3 class="mt-0">Security Risk Score</h3>
+      <div class="center" style="font-size:2.4rem; font-weight:700;" id="riskScoreVal">— / 100</div>
+      <div class="center"><span class="badge" id="riskLevelBadge">—</span></div>
+      <div class="risk-meter" style="margin-top:14px;">
+        <div class="risk-meter-fill" id="riskMeterFill" style="width:0%;"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="mt-0">Security Events</h3>
+      <ul class="timeline" id="eventsTimeline">
+        <li><span class="time">—</span> No events yet.</li>
+      </ul>
+    </div>
+
+    <div class="card center">
+      <a href="attack-demo.html" class="btn btn-outline">Back to Attack Demo</a>
+    </div>
+  </div>
+
+  <script src="js/security-result.js"></script>
+</body>
+</html>

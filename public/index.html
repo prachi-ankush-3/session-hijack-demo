@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SocialShield Demo</title>
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  .hero { text-align: center; padding: 70px 20px 30px; }
+  .hero h1 { font-size: 2.4rem; margin-bottom: 6px; }
+  .hero p.sub { color: var(--text-2); font-size: 1.1rem; margin-top: 0; }
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin: 40px 0;
+  }
+  .feature {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .feature .emoji { font-size: 1.8rem; }
+  .cta { text-align: center; margin-top: 30px; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">🛡 SocialShield <span class="brand-badge">Demo</span></div>
+  </div>
+
+  <div class="container">
+    <div class="hero fade-in">
+      <h1>SocialShield Demo</h1>
+      <p class="sub">Understanding Session Hijacking Risk</p>
+      <div class="warning-banner center" style="display:inline-block; margin-top: 18px;">
+        EDUCATIONAL LOCAL DEMONSTRATION — no real accounts, cookies, or websites involved.
+      </div>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature"><div class="emoji">🔐</div>Authentication</div>
+      <div class="feature"><div class="emoji">🪪</div>Session Management</div>
+      <div class="feature"><div class="emoji">⚠️</div>Session Hijacking Simulation</div>
+      <div class="feature"><div class="emoji">👤</div>Identity Impersonation</div>
+      <div class="feature"><div class="emoji">🛡</div>Security Awareness</div>
+    </div>
+
+    <div class="cta">
+      <a href="login.html" class="btn btn-primary">Start Demo</a>
+    </div>
+  </div>
+</body>
+</html>

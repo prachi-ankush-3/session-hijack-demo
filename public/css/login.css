@@ -1,0 +1,30 @@
+.login-wrap {
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 0 20px;
+}
+
+.demo-creds {
+  background: var(--card-2);
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 0.85rem;
+  margin-top: 18px;
+}
+.demo-creds .cred-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+.login-error {
+  background: rgba(239,68,68,0.12);
+  border: 1px solid rgba(239,68,68,0.4);
+  color: #fca5a5;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  margin-bottom: 14px;
+  display: none;
+}

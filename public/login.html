@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Login — SocialShield Demo</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/login.css" />
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html" class="brand">🛡 SocialShield <span class="brand-badge">Demo</span></a>
+  </div>
+
+  <div class="login-wrap">
+    <div class="card fade-in">
+      <h2 class="mt-0">Log in</h2>
+      <div id="loginError" class="login-error"></div>
+      <form id="loginForm">
+        <label for="username">Username</label>
+        <input type="text" id="username" autocomplete="off" required />
+        <label for="password">Password</label>
+        <input type="password" id="password" autocomplete="off" required />
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Login</button>
+      </form>
+
+      <div class="demo-creds">
+        <strong>Demo User A</strong>
+        <div class="cred-row"><span>alice</span><span>alice123</span></div>
+        <strong style="display:block; margin-top:10px;">Demo User B</strong>
+        <div class="cred-row"><span>bob</span><span>bob123</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

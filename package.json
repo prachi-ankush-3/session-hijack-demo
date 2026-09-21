@@ -1,0 +1,13 @@
+{
+  "name": "session-hijacking-risk-demo",
+  "version": "1.0.0",
+  "description": "SocialShield Demo - Educational session hijacking risk demonstration (local, fake data only)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

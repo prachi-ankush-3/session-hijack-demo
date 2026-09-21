@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard — SocialShield Demo</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/dashboard.css" />
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html" class="brand">🛡 SocialShield <span class="brand-badge">Demo</span></a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="profile.html">Profile</a>
+      <a href="attack-demo.html">Attack Demo</a>
+      <a href="#" id="logoutLink">Logout</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card fade-in" id="welcomeCard">
+      <div class="welcome-row">
+        <h2 class="mt-0 mb-0" id="welcomeText">Welcome 👋</h2>
+        <span class="badge badge-active" id="statusBadge">● ACTIVE</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 class="mt-0">Session Information</h3>
+      <div class="warning-banner">⚠ DEMO SESSION ID — NOT A REAL AUTHENTICATION TOKEN</div>
+
+      <div class="session-field">
+        <span class="k">Account</span>
+        <span id="accountVal">—</span>
+      </div>
+      <div class="session-field">
+        <span class="k">Session Status</span>
+        <span id="statusVal">—</span>
+      </div>
+      <div class="session-field">
+        <span class="k">Session ID</span>
+        <span class="mono" id="sessionIdVal">—</span>
+      </div>
+      <div class="session-field">
+        <span class="k">Created</span>
+        <span id="createdVal">—</span>
+      </div>
+      <div class="session-field">
+        <span class="k">Last Activity</span>
+        <span id="lastActivityVal">—</span>
+      </div>
+
+      <div style="margin-top:20px;">
+        <a href="profile.html" class="btn btn-outline">View Profile</a>
+        <button class="btn btn-danger" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

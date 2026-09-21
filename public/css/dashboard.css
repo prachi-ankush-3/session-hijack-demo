@@ -1,0 +1,17 @@
+.welcome-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.session-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.session-field:last-child { border-bottom: none; }
+.session-field .k { color: var(--text-2); font-size: 0.88rem; }

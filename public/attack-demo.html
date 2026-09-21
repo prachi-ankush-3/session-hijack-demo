@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Session Hijacking Risk Demonstration — SocialShield Demo</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="css/attack.css" />
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html" class="brand">🛡 SocialShield <span class="brand-badge">Demo</span></a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="profile.html">Profile</a>
+      <a href="attack-demo.html">Attack Demo</a>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <div class="card fade-in">
+      <h1 class="mt-0">⚠️ Session Hijacking Risk Demonstration</h1>
+      <div class="warning-banner">
+        This is a safe local simulation. We will demonstrate what could happen if an application's
+        session identifier were compromised. No real cookies or external accounts are involved.
+      </div>
+      <div class="arrow-flow" style="margin-top:20px;">
+        <span class="step">Alice Login</span>→
+        <span class="step">Session A Created</span>→
+        <span class="step">Session Exposed</span>→
+        <span class="step">Simulated Compromise</span>→
+        <span class="step">Reused by Bob</span>→
+        <span class="step">🚨 Impersonation</span>
+      </div>
+    </div>
+
+    <button class="btn btn-outline" id="startFullDemoBtn" style="margin-bottom:16px;">▶ Start Full Demo (Presenter Guide)</button>
+    <div class="card" id="demoGuideCard" style="display:none;">
+      <h3 class="mt-0">Presenter Guide</h3>
+      <ol class="step-list">
+        <li>Login as Alice (User A panel)</li>
+        <li>Show Alice's profile via the session info below</li>
+        <li>Show Alice's fake session ID</li>
+        <li>Click "Simulate Session Theft"</li>
+        <li>Login as Bob (User B panel)</li>
+        <li>Paste Alice's session ID and click "Inject Demo Session"</li>
+        <li>Watch Alice's profile appear in User B's panel</li>
+        <li>Note the CRITICAL risk score</li>
+        <li>Click "Revoke Session"</li>
+        <li>Click "Reset Demonstration" to run it again</li>
+      </ol>
+    </div>
+
+    <div class="grid-2">
+      <!-- USER A PANEL -->
+      <div class="card user-panel">
+        <h3>👤 User A — Alice</h3>
+        <div id="panelA-loggedOut">
+          <p class="text-2 small">Not logged in yet.</p>
+          <button class="btn btn-primary" id="loginAliceBtn">Login as Alice</button>
+        </div>
+        <div id="panelA-loggedIn" style="display:none;">
+          <div class="session-field"><span class="k">Username</span><span id="a-username">—</span></div>
+          <div class="session-field"><span class="k">Status</span><span id="a-status">—</span></div>
+          <div class="session-field"><span class="k">Session ID</span><span class="mono" id="a-sessionId">—</span></div>
+
+          <div class="copy-row">
+            <button class="btn btn-warning" id="simulateTheftBtn">⚠️ Simulate Session Theft</button>
+            <button class="btn btn-outline" id="copySessionBtn">Copy Demo Session ID</button>
+          </div>
+          <div class="small" style="color: var(--success); margin-top:6px; display:none;" id="copiedMsg">✓ Demo Session ID copied</div>
+          <div class="danger-banner" style="margin-top:14px;">
+            This is NOT a real browser cookie or authentication token.
+          </div>
+        </div>
+      </div>
+
+      <!-- USER B PANEL -->
+      <div class="card user-panel">
+        <h3>🕵️ User B Simulation — Bob</h3>
+        <div id="panelB-loggedOut">
+          <p class="text-2 small">Not logged in yet.</p>
+          <button class="btn btn-primary" id="loginBobBtn">Login as Bob</button>
+        </div>
+        <div id="panelB-loggedIn" style="display:none;">
+          <div class="session-field"><span class="k">Username</span><span id="b-username">—</span></div>
+          <div class="session-field"><span class="k">Normal Session</span><span class="mono" id="b-sessionId">—</span></div>
+          <div class="session-field"><span class="k">Profile</span><span id="b-profile">—</span></div>
+
+          <label style="margin-top:14px;">Paste Simulated Session ID</label>
+          <input type="text" id="injectInput" placeholder="DEMO_SESSION_XXXXXXXXXX" />
+          <button class="btn btn-danger" id="injectBtn">Inject Demo Session</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT SECTION -->
+    <div class="card fade-in" id="resultCard" style="display:none;">
+      <h2 class="mt-0" id="resultTitle">🚨 SESSION HIJACKING SIMULATION SUCCESSFUL</h2>
+      <div class="danger-banner">
+        The application accepted a previously valid demo session. As a result, User B is now
+        treated as User A. This demonstrates why secure session management is important.
+      </div>
+
+      <div class="session-field"><span class="k">Original Session Owner</span><span id="resOwner">—</span></div>
+      <div class="session-field"><span class="k">Current User</span><span id="resCurrent">—</span></div>
+      <div class="session-field"><span class="k">Logged-in Browser</span><span>User B Demo Browser</span></div>
+      <div class="session-field"><span class="k">Identity</span><span class="badge badge-critical">IMPERSONATED</span></div>
+      <div class="session-field"><span class="k">Risk</span><span class="badge badge-critical">CRITICAL</span></div>
+
+      <h3 style="margin-top:26px;">Before / After</h3>
+      <div class="before-after">
+        <div class="ba-card before">
+          <strong>BEFORE</strong>
+          <div class="session-field"><span class="k">Browser</span><span>User B</span></div>
+          <div class="session-field"><span class="k">Authenticated User</span><span>Bob</span></div>
+          <div class="session-field"><span class="k">Profile</span><span>@bob</span></div>
+          <div class="session-field"><span class="k">Risk</span><span class="badge badge-low">LOW</span></div>
+        </div>
+        <div class="ba-arrow">→<br/>SIMULATED<br/>COMPROMISE<br/>→</div>
+        <div class="ba-card after">
+          <strong>AFTER</strong>
+          <div class="session-field"><span class="k">Browser</span><span>User B</span></div>
+          <div class="session-field"><span class="k">Authenticated User</span><span>Alice</span></div>
+          <div class="session-field"><span class="k">Profile</span><span>@alice</span></div>
+          <div class="session-field"><span class="k">Risk</span><span class="badge badge-critical">CRITICAL</span></div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;">
+        <a href="security-result.html" class="btn btn-outline" id="viewResultPageLink">View Full Security Result Page</a>
+      </div>
+    </div>
+
+    <!-- RISK + EVENTS -->
+    <div class="grid-2">
+      <div class="card">
+        <h3 class="mt-0">Security Risk Score</h3>
+        <div class="center" style="font-size:2.2rem; font-weight:700;" id="riskScoreVal">10 / 100</div>
+        <div class="center"><span class="badge badge-low" id="riskLevelBadge">LOW</span></div>
+        <div class="risk-meter" style="margin-top:14px;">
+          <div class="risk-meter-fill" id="riskMeterFill" style="width:10%; background: var(--success);"></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 class="mt-0">Security Events</h3>
+        <ul class="timeline" id="eventsTimeline">
+          <li><span class="time">—</span> No events yet.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card center">
+      <button class="btn btn-danger" id="revokeBtn" disabled>🔒 Revoke Session</button>
+      <button class="btn btn-outline" id="resetBtn">Reset Demonstration</button>
+      <div class="small" style="color: var(--success); margin-top:10px; display:none;" id="revokeMsg">✓ Session Revoked — The compromised demo session is no longer valid.</div>
+      <div class="small" style="color: var(--success); margin-top:10px; display:none;" id="resetMsg">✓ Demo reset successfully</div>
+    </div>
+
+  </div>
+
+  <script src="js/attack-demo.js"></script>
+</body>
+</html>

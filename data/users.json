@@ -1,0 +1,20 @@
+{
+  "alice": {
+    "username": "alice",
+    "password": "alice123",
+    "name": "Alice Sharma",
+    "bio": "Computer Engineering Student",
+    "followers": 245,
+    "following": 180,
+    "posts": 12
+  },
+  "bob": {
+    "username": "bob",
+    "password": "bob123",
+    "name": "Bob Patil",
+    "bio": "Technology Enthusiast",
+    "followers": 180,
+    "following": 220,
+    "posts": 8
+  }
+}

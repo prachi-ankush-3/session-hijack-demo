@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Profile — SocialShield Demo</title>
+<link rel="stylesheet" href="css/style.css" />
+<style>
+  .avatar {
+    width: 78px; height: 78px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), #8b5cf6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; font-weight: 700; color: white;
+  }
+  .profile-head { display: flex; gap: 18px; align-items: center; }
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html" class="brand">🛡 SocialShield <span class="brand-badge">Demo</span></a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="profile.html">Profile</a>
+      <a href="attack-demo.html">Attack Demo</a>
+      <a href="#" id="logoutLink">Logout</a>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="card fade-in" id="profileCard">
+      <div class="profile-head">
+        <div class="avatar" id="avatarInitial">?</div>
+        <div>
+          <h2 class="mt-0 mb-0" id="profileName">—</h2>
+          <div class="text-2" id="profileHandle">@—</div>
+        </div>
+      </div>
+      <p id="profileBio" class="small" style="margin-top:18px;">—</p>
+      <div class="stats-row">
+        <div class="stat"><span class="num" id="followersVal">0</span><span class="label">Followers</span></div>
+        <div class="stat"><span class="num" id="followingVal">0</span><span class="label">Following</span></div>
+        <div class="stat"><span class="num" id="postsVal">0</span><span class="label">Posts</span></div>
+      </div>
+      <div class="text-2 small" style="margin-top:18px;">
+        Profile resolved from active demo session: <span class="mono" id="sessionIdSmall">—</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/profile.js"></script>
+</body>
+</html>
