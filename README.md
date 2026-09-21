@@ -99,6 +99,29 @@ Bob   → bob / bob123
 > **User B's simulated session is now treated as User A, demonstrating the risk of session hijacking.**
 
 ---
+## 🖥️ Project Outputs
+
+### 🔐 Attack Simulation
+
+<p align="center">
+  <img src="outputs/1.png" width="32%">
+  <img src="outputs/2.png" width="32%">
+  <img src="outputs/3.png" width="32%">
+</p>
+
+### 🛡️ Security & Protection
+
+<p align="center">
+  <img src="outputs/4.png" width="70%">
+</p>
+
+<p align="center">
+  <img src="outputs/5.png" width="70%">
+</p>
+
+<p align="center">
+  <img src="outputs/6.png" width="70%">
+</p>
 
 ## 🔐 Safety
 
