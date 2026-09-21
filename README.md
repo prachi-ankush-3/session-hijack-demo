@@ -134,6 +134,12 @@ This project runs **only locally**.
 The session compromise is intentionally simulated using fake session IDs.
 
 ---
+## 🚀 Live Demo
+
+🔗 **[session-hijack-demo.vercel.app](https://session-hijack-demo.vercel.app/)**
+
+> Explore the SessionShield session hijacking security simulation.
+
 
 ## 🔮 Next Phase
 
