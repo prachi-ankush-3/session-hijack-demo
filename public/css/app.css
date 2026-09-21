@@ -1,0 +1,29 @@
+.app-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 20px;
+}
+@media (max-width: 820px) {
+  .app-layout { grid-template-columns: 1fr; }
+}
+
+.profile-head { display: flex; gap: 14px; align-items: center; }
+.profile-head .avatar { width: 64px; height: 64px; font-size: 1.5rem; }
+
+.post-card {
+  background: var(--card-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+.post-card .post-head {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+}
+.post-card .avatar { width: 34px; height: 34px; font-size: 0.85rem; }
+.post-card .post-meta { font-size: 0.78rem; color: var(--muted); }
+
+.welcome-row {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 14px;
+}

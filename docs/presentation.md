@@ -1,48 +1,52 @@
 # Presentation Script
 
-A simple explanation a student can read aloud while running the demo:
+A simple explanation to read aloud while running the demo (approx. 3–5 minutes):
 
-> Our project demonstrates the risk of session hijacking using a
-> controlled local environment.
+> Our project, SessionShield, demonstrates the risk of session hijacking
+> using a controlled local environment.
 >
-> First, User A logs into our fake social-media website and receives a
-> demo session ID.
+> First, Alice — User A — logs into our fake social platform and receives
+> a demo session ID.
 >
-> We then simulate that this session identifier has been compromised.
+> We simulate that this session identifier has become compromised — for
+> example, exposed through an insecure network or a logging mistake.
 >
-> Next, User B's demo browser uses this simulated session ID.
+> Next, Bob — User B — logs in normally to his own account, and we paste
+> Alice's compromised session ID into Bob's browser.
 >
-> Because the server accepts the valid session, the application identifies
-> User B as User A.
+> Because the server accepts that valid session identifier, the
+> application now treats Bob's browser as Alice.
 >
-> Therefore, User B can see User A's profile.
+> Bob's screen changes to show Alice's profile, and our risk score jumps
+> from 10 out of 100 — low risk — to 95 out of 100 — critical risk.
 >
-> This demonstrates the importance of secure session management.
+> This demonstrates why secure session management — short session
+> lifetimes, secure cookies, and session rotation — matters.
 >
-> In the next phase of our project, our Chrome extension will detect this
-> suspicious session behavior and provide protection.
+> In the next phase of our project, a companion Chrome extension will
+> detect this kind of suspicious session behavior and alert the user.
 
-## Suggested live-demo order
+## Presenter flow (matches the UI)
 
-1. Open `attack-demo.html`.
-2. Click **Start Full Demo** to show the presenter guide on-screen.
-3. Log in as Alice (User A panel) — point out the fake session ID and the
-   "not a real authentication token" warning.
-4. Click **Simulate Session Theft**.
-5. Copy the session ID.
-6. Log in as Bob (User B panel) — point out Bob's own, separate session ID.
-7. Paste Alice's session ID and click **Inject Demo Session**.
-8. Show the result card: Alice's identity now appears in Bob's panel, the
-   Before/After comparison, and the risk score jumping to 95/100 CRITICAL.
-9. Scroll to the Security Events timeline to narrate what just happened.
-10. Click **Revoke Session** to show the impersonation being shut down.
-11. Click **Reset Demonstration** before the next run-through.
+1. Open SessionShield
+2. Log in as Alice, show her profile on the app page
+3. Open the **Security** / Risk Lab page
+4. Log in as Alice in Browser A, point out her demo session ID
+5. Click **Simulate Session Theft** — show the session marked COMPROMISED
+6. Log in as Bob in Browser B — show his normal profile, LOW risk
+7. Paste Alice's session ID and click **Simulate Session Injection**
+8. Point out: Bob's screen now shows Alice's profile — 🚨 identity impersonation
+9. Show the risk score at 95/100 CRITICAL
+10. Show the Before → After comparison card
+11. Scroll to the Security Event Timeline
+12. Click **Revoke Compromised Session**
+13. Click **Reset Demo** before the next run-through
 
 ## Key talking points
 
 - A session ID is a *bearer credential* — whoever has it is trusted.
 - This is why HTTPS, `HttpOnly`/`Secure` cookies, short session lifetimes,
-  session rotation on login, and IP/device binding all matter in real
-  systems.
-- This entire demo is local and fake: no real accounts, cookies, or
-  external services were touched.
+  session rotation on login, and anomaly/IP-binding checks all matter in
+  real systems.
+- Everything in this demo is local and fake — no real accounts, cookies,
+  or external services were touched.

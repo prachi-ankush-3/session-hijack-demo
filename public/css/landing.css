@@ -1,0 +1,36 @@
+.hero { text-align: center; padding: 60px 20px 20px; }
+.hero .shield-big { font-size: 3rem; }
+.hero h1 { font-size: 2.6rem; margin: 6px 0 0; letter-spacing: -0.01em; }
+.hero p.sub {
+  color: var(--muted); font-size: 1.15rem; max-width: 560px; margin: 14px auto 0;
+}
+
+.hero-actions {
+  display: flex; gap: 14px; justify-content: center; margin-top: 30px; flex-wrap: wrap;
+}
+
+.feature-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+.feature-card:hover { transform: translateY(-3px); border-color: var(--primary); }
+.feature-card .icon { font-size: 1.7rem; margin-bottom: 10px; }
+.feature-card h4 { margin: 0 0 6px; }
+.feature-card p { margin: 0; color: var(--muted); font-size: 0.86rem; }
+
+.how-it-works { display: none; margin-top: 10px; }
+.how-card {
+  background: var(--card-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+.how-card .step-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--primary); color: white; font-size: 0.78rem; font-weight: 800;
+  margin-bottom: 10px;
+}

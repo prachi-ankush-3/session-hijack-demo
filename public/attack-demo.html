@@ -3,163 +3,233 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Session Hijacking Risk Demonstration — SocialShield Demo</title>
-<link rel="stylesheet" href="css/style.css" />
+<title>Session Hijacking Risk Lab — SessionShield</title>
+<link rel="stylesheet" href="css/global.css" />
 <link rel="stylesheet" href="css/attack.css" />
 </head>
 <body>
   <div class="topbar">
-    <a href="index.html" class="brand">🛡 SocialShield <span class="brand-badge">Demo</span></a>
+    <a href="index.html" class="brand"><span class="shield">🛡</span> SessionShield</a>
     <div class="nav-links">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="profile.html">Profile</a>
-      <a href="attack-demo.html">Attack Demo</a>
+      <a href="app.html">Home</a>
+      <a href="attack-demo.html" class="active">Security</a>
     </div>
   </div>
 
   <div class="container">
 
-    <div class="card fade-in">
-      <h1 class="mt-0">⚠️ Session Hijacking Risk Demonstration</h1>
-      <div class="warning-banner">
-        This is a safe local simulation. We will demonstrate what could happen if an application's
-        session identifier were compromised. No real cookies or external accounts are involved.
-      </div>
-      <div class="arrow-flow" style="margin-top:20px;">
-        <span class="step">Alice Login</span>→
-        <span class="step">Session A Created</span>→
-        <span class="step">Session Exposed</span>→
-        <span class="step">Simulated Compromise</span>→
-        <span class="step">Reused by Bob</span>→
-        <span class="step">🚨 Impersonation</span>
+    <div class="card fade-in center">
+      <h1 class="mt-0">⚠️ SESSION HIJACKING RISK LAB</h1>
+      <p class="text-muted">Controlled demonstration of session impersonation</p>
+      <div class="banner banner-info" style="display:inline-block; text-align:left;">
+        🔬 CONTROLLED SECURITY SIMULATION — This project demonstrates session hijacking concepts using
+        fake local session identifiers. No real authentication cookies are accessed. No real accounts are attacked.
       </div>
     </div>
 
-    <button class="btn btn-outline" id="startFullDemoBtn" style="margin-bottom:16px;">▶ Start Full Demo (Presenter Guide)</button>
-    <div class="card" id="demoGuideCard" style="display:none;">
-      <h3 class="mt-0">Presenter Guide</h3>
-      <ol class="step-list">
-        <li>Login as Alice (User A panel)</li>
-        <li>Show Alice's profile via the session info below</li>
-        <li>Show Alice's fake session ID</li>
-        <li>Click "Simulate Session Theft"</li>
-        <li>Login as Bob (User B panel)</li>
-        <li>Paste Alice's session ID and click "Inject Demo Session"</li>
-        <li>Watch Alice's profile appear in User B's panel</li>
-        <li>Note the CRITICAL risk score</li>
-        <li>Click "Revoke Session"</li>
-        <li>Click "Reset Demonstration" to run it again</li>
-      </ol>
+    <!-- STEPPER -->
+    <div class="card">
+      <div class="stepper" id="stepper">
+        <span class="step-chip" data-step="1"><span class="dot"></span>① Alice Login</span>
+        <span class="step-chip" data-step="2"><span class="dot"></span>② Session Created</span>
+        <span class="step-chip" data-step="3"><span class="dot"></span>③ Session Compromised</span>
+        <span class="step-chip" data-step="4"><span class="dot"></span>④ Bob Login</span>
+        <span class="step-chip" data-step="5"><span class="dot"></span>⑤ Session Reused</span>
+        <span class="step-chip" data-step="6"><span class="dot"></span>⑥ Identity Changed</span>
+        <span class="step-chip" data-step="7"><span class="dot"></span>⑦ Risk Detected</span>
+      </div>
     </div>
 
+    <!-- USER A / USER B BROWSER PANELS -->
     <div class="grid-2">
-      <!-- USER A PANEL -->
-      <div class="card user-panel">
-        <h3>👤 User A — Alice</h3>
-        <div id="panelA-loggedOut">
-          <p class="text-2 small">Not logged in yet.</p>
-          <button class="btn btn-primary" id="loginAliceBtn">Login as Alice</button>
-        </div>
-        <div id="panelA-loggedIn" style="display:none;">
-          <div class="session-field"><span class="k">Username</span><span id="a-username">—</span></div>
-          <div class="session-field"><span class="k">Status</span><span id="a-status">—</span></div>
-          <div class="session-field"><span class="k">Session ID</span><span class="mono" id="a-sessionId">—</span></div>
-
-          <div class="copy-row">
-            <button class="btn btn-warning" id="simulateTheftBtn">⚠️ Simulate Session Theft</button>
-            <button class="btn btn-outline" id="copySessionBtn">Copy Demo Session ID</button>
+      <!-- USER A -->
+      <div class="browser-window">
+        <div class="browser-chrome"><span class="dots"><span></span><span></span><span></span></span>🖥 Browser A — Alice</div>
+        <div class="browser-body">
+          <div id="a-loggedOut">
+            <p class="text-muted small">Not logged in yet.</p>
+            <button class="btn btn-primary" id="loginAliceBtn">Login as Alice</button>
           </div>
-          <div class="small" style="color: var(--success); margin-top:6px; display:none;" id="copiedMsg">✓ Demo Session ID copied</div>
-          <div class="danger-banner" style="margin-top:14px;">
-            This is NOT a real browser cookie or authentication token.
+          <div id="a-loggedIn" style="display:none;">
+            <div style="display:flex; gap:12px; align-items:center;">
+              <div class="avatar avatar-alice" style="width:44px;height:44px;">A</div>
+              <div>
+                <strong>Alice Sharma</strong><br/>
+                <span class="text-muted small">@alice</span>
+              </div>
+              <span class="badge badge-active" style="margin-left:auto;">● Logged In</span>
+            </div>
+
+            <div class="field-row" style="margin-top:14px;"><span class="k">Session Status</span><span id="a-simState">🟢 NORMAL</span></div>
+            <div class="field-row"><span class="k">Demo Session</span><span class="mono" id="a-sessionId">—</span></div>
+
+            <button class="btn btn-warning" id="simulateTheftBtn" style="width:100%; justify-content:center; margin-top:14px;">⚠️ Simulate Session Theft</button>
+            <div class="copy-row">
+              <button class="btn btn-outline" id="copyAliceSessionBtn" style="width:100%; justify-content:center;">Copy Demo Session ID</button>
+            </div>
+            <div class="small" style="color: var(--success); margin-top:6px; display:none; text-align:center;" id="copiedAliceMsg">✓ Demo Session ID copied</div>
+
+            <div id="compromiseNotice" style="display:none; margin-top:14px;">
+              <div class="banner banner-danger">
+                🚨 SIMULATION EVENT — Alice's demo session has been marked as COMPROMISED. This represents a
+                hypothetical situation where a session identifier becomes exposed.
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- USER B PANEL -->
-      <div class="card user-panel">
-        <h3>🕵️ User B Simulation — Bob</h3>
-        <div id="panelB-loggedOut">
-          <p class="text-2 small">Not logged in yet.</p>
-          <button class="btn btn-primary" id="loginBobBtn">Login as Bob</button>
-        </div>
-        <div id="panelB-loggedIn" style="display:none;">
-          <div class="session-field"><span class="k">Username</span><span id="b-username">—</span></div>
-          <div class="session-field"><span class="k">Normal Session</span><span class="mono" id="b-sessionId">—</span></div>
-          <div class="session-field"><span class="k">Profile</span><span id="b-profile">—</span></div>
+      <!-- USER B -->
+      <div class="browser-window">
+        <div class="browser-chrome"><span class="dots"><span></span><span></span><span></span></span>🖥 Browser B — Bob</div>
+        <div class="browser-body">
+          <div id="b-loggedOut">
+            <p class="text-muted small">Not logged in yet.</p>
+            <button class="btn btn-primary" id="loginBobBtn">Login as Bob</button>
+          </div>
+          <div id="b-loggedIn" style="display:none;">
+            <div style="display:flex; gap:12px; align-items:center;">
+              <div class="avatar avatar-bob" style="width:44px;height:44px;" id="b-avatarLetter">B</div>
+              <div>
+                <strong id="b-name">Bob Patil</strong><br/>
+                <span class="text-muted small" id="b-handle">@bob</span>
+              </div>
+              <span class="badge badge-active" style="margin-left:auto;">● Logged In</span>
+            </div>
 
-          <label style="margin-top:14px;">Paste Simulated Session ID</label>
-          <input type="text" id="injectInput" placeholder="DEMO_SESSION_XXXXXXXXXX" />
-          <button class="btn btn-danger" id="injectBtn">Inject Demo Session</button>
+            <div class="field-row" style="margin-top:14px;"><span class="k">Current Identity</span><span id="b-identity">Bob</span></div>
+            <div class="field-row"><span class="k">Risk Score</span><span id="b-riskInline">10 / 100 — LOW</span></div>
+
+            <label style="margin-top:14px;">Paste DEMO Session ID</label>
+            <input type="text" id="injectInput" placeholder="DEMO_SESSION_XXXXXXXX" />
+            <button class="btn btn-danger" id="injectBtn" style="width:100%; justify-content:center;">🔄 Simulate Session Injection</button>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- RESULT SECTION -->
-    <div class="card fade-in" id="resultCard" style="display:none;">
-      <h2 class="mt-0" id="resultTitle">🚨 SESSION HIJACKING SIMULATION SUCCESSFUL</h2>
-      <div class="danger-banner">
-        The application accepted a previously valid demo session. As a result, User B is now
-        treated as User A. This demonstrates why secure session management is important.
+    <!-- IDENTITY TRANSITION -->
+    <div class="card center" id="transitionCard" style="display:none;">
+      <h2 class="mt-0">🚨 IDENTITY IMPERSONATION SIMULATED</h2>
+      <div class="identity-transition">
+        <div class="identity-box" id="beforeIdBox">
+          <div class="avatar avatar-bob" style="width:52px;height:52px; margin:0 auto 8px;">B</div>
+          <div class="name">Bob</div>
+          <div class="handle">@bob</div>
+        </div>
+        <div class="identity-arrow">⚠️→</div>
+        <div class="identity-box swapped" id="afterIdBox">
+          <div class="avatar avatar-alice" style="width:52px;height:52px; margin:0 auto 8px;">A</div>
+          <div class="name">Alice</div>
+          <div class="handle">@alice</div>
+        </div>
       </div>
+      <div class="banner banner-danger" style="text-align:left; margin-top:14px;">
+        🚨 SESSION HIJACKING RISK — The demo application accepted a previously valid session identifier.
+        The authenticated identity changed from <strong>BOB</strong> to <strong>ALICE</strong>. This
+        demonstrates the risk of session impersonation when session identifiers are compromised.
+      </div>
+    </div>
 
-      <div class="session-field"><span class="k">Original Session Owner</span><span id="resOwner">—</span></div>
-      <div class="session-field"><span class="k">Current User</span><span id="resCurrent">—</span></div>
-      <div class="session-field"><span class="k">Logged-in Browser</span><span>User B Demo Browser</span></div>
-      <div class="session-field"><span class="k">Identity</span><span class="badge badge-critical">IMPERSONATED</span></div>
-      <div class="session-field"><span class="k">Risk</span><span class="badge badge-critical">CRITICAL</span></div>
+    <!-- USER B SCREEN CHANGE (full profile takeover view) -->
+    <div class="card fade-in" id="userBScreenCard" style="display:none;">
+      <h3 class="mt-0" id="userBScreenTitle">🚨 SESSION IDENTITY CHANGED</h3>
+      <div class="profile-head">
+        <div class="avatar avatar-alice" style="width:60px;height:60px; font-size:1.3rem;" id="ub-avatar">A</div>
+        <div>
+          <h3 class="mt-0 mb-0" id="ub-welcome">Welcome, Alice 👋</h3>
+          <div class="text-muted" id="ub-handle">@alice</div>
+        </div>
+      </div>
+      <p class="small text-muted" id="ub-name">Alice Sharma</p>
+      <p class="small" id="ub-bio">Computer Engineering Student</p>
+      <div class="stats-row">
+        <div class="stat"><span class="num" id="ub-followers">245</span><span class="label">Followers</span></div>
+        <div class="stat"><span class="num" id="ub-following">180</span><span class="label">Following</span></div>
+        <div class="stat"><span class="num" id="ub-posts">12</span><span class="label">Posts</span></div>
+      </div>
+    </div>
 
-      <h3 style="margin-top:26px;">Before / After</h3>
+    <!-- BEFORE / AFTER -->
+    <div class="card" id="beforeAfterCard">
+      <h3 class="mt-0 center">Before / After Comparison</h3>
       <div class="before-after">
         <div class="ba-card before">
           <strong>BEFORE</strong>
-          <div class="session-field"><span class="k">Browser</span><span>User B</span></div>
-          <div class="session-field"><span class="k">Authenticated User</span><span>Bob</span></div>
-          <div class="session-field"><span class="k">Profile</span><span>@bob</span></div>
-          <div class="session-field"><span class="k">Risk</span><span class="badge badge-low">LOW</span></div>
+          <div class="field-row"><span class="k">🟢 Status</span><span>NORMAL</span></div>
+          <div class="field-row"><span class="k">Browser User</span><span>Bob</span></div>
+          <div class="field-row"><span class="k">Authenticated Identity</span><span>Bob</span></div>
+          <div class="field-row"><span class="k">Visible Profile</span><span>@bob</span></div>
+          <div class="field-row"><span class="k">Risk</span><span class="badge badge-low">10 / 100 LOW</span></div>
         </div>
-        <div class="ba-arrow">→<br/>SIMULATED<br/>COMPROMISE<br/>→</div>
+        <div class="ba-arrow">→</div>
         <div class="ba-card after">
           <strong>AFTER</strong>
-          <div class="session-field"><span class="k">Browser</span><span>User B</span></div>
-          <div class="session-field"><span class="k">Authenticated User</span><span>Alice</span></div>
-          <div class="session-field"><span class="k">Profile</span><span>@alice</span></div>
-          <div class="session-field"><span class="k">Risk</span><span class="badge badge-critical">CRITICAL</span></div>
+          <div class="field-row"><span class="k">🔴 Status</span><span id="ba-afterStatus">NORMAL</span></div>
+          <div class="field-row"><span class="k">Browser</span><span>Bob</span></div>
+          <div class="field-row"><span class="k">Identity</span><span id="ba-afterIdentity">Bob</span></div>
+          <div class="field-row"><span class="k">Profile</span><span id="ba-afterProfile">@bob</span></div>
+          <div class="field-row"><span class="k">Risk</span><span class="badge" id="ba-afterRiskBadge">10 / 100 LOW</span></div>
         </div>
-      </div>
-
-      <div style="margin-top:20px;">
-        <a href="security-result.html" class="btn btn-outline" id="viewResultPageLink">View Full Security Result Page</a>
       </div>
     </div>
 
-    <!-- RISK + EVENTS -->
+    <!-- RISK METER -->
     <div class="grid-2">
       <div class="card">
-        <h3 class="mt-0">Security Risk Score</h3>
-        <div class="center" style="font-size:2.2rem; font-weight:700;" id="riskScoreVal">10 / 100</div>
-        <div class="center"><span class="badge badge-low" id="riskLevelBadge">LOW</span></div>
+        <h3 class="mt-0 center">Security Risk</h3>
+        <div class="center risk-score-display" id="riskScoreVal" style="font-size:2.4rem; font-weight:800;">10 / 100</div>
+        <div class="center">
+          <span class="badge badge-low" id="riskLevelBadge">LOW</span>
+          <span class="small text-muted" id="riskDeltaVal"></span>
+        </div>
         <div class="risk-meter" style="margin-top:14px;">
           <div class="risk-meter-fill" id="riskMeterFill" style="width:10%; background: var(--success);"></div>
         </div>
       </div>
+
       <div class="card">
-        <h3 class="mt-0">Security Events</h3>
+        <h3 class="mt-0">Security Event Timeline</h3>
         <ul class="timeline" id="eventsTimeline">
           <li><span class="time">—</span> No events yet.</li>
         </ul>
       </div>
     </div>
 
+    <!-- ACTIONS -->
     <div class="card center">
-      <button class="btn btn-danger" id="revokeBtn" disabled>🔒 Revoke Session</button>
-      <button class="btn btn-outline" id="resetBtn">Reset Demonstration</button>
-      <div class="small" style="color: var(--success); margin-top:10px; display:none;" id="revokeMsg">✓ Session Revoked — The compromised demo session is no longer valid.</div>
-      <div class="small" style="color: var(--success); margin-top:10px; display:none;" id="resetMsg">✓ Demo reset successfully</div>
+      <button class="btn btn-danger" id="revokeBtn" disabled>🔒 Revoke Compromised Session</button>
+      <button class="btn btn-outline" id="resetBtn">↻ Reset Demo</button>
+      <div class="small" style="color: var(--success); margin-top:12px; display:none;" id="revokeMsg">
+        ✅ SESSION REVOKED — The compromised demo session is no longer valid. The simulated impersonation has been stopped.
+      </div>
+      <div class="small" style="color: var(--success); margin-top:12px; display:none;" id="resetMsg">Demo Ready</div>
+    </div>
+
+    <!-- EXPLANATION -->
+    <div class="card">
+      <h3 class="mt-0 center">How does this happen?</h3>
+      <div class="explain-grid">
+        <div class="explain-card">
+          <div class="num">1</div>
+          <h4 class="mt-0">Session Created</h4>
+          <p class="text-muted small">After login, the application associates a session identifier with the user.</p>
+        </div>
+        <div class="explain-card">
+          <div class="num">2</div>
+          <h4 class="mt-0">Session Compromised</h4>
+          <p class="text-muted small">If the session identifier becomes exposed, another party could potentially reuse it.</p>
+        </div>
+        <div class="explain-card">
+          <div class="num">3</div>
+          <h4 class="mt-0">Identity Impersonation</h4>
+          <p class="text-muted small">If the server accepts the compromised session, the application may associate the request with the original user.</p>
+        </div>
+      </div>
     </div>
 
   </div>
 
-  <script src="js/attack-demo.js"></script>
+  <script src="js/attack.js"></script>
 </body>
 </html>

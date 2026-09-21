@@ -3,18 +3,22 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Login — SocialShield Demo</title>
-<link rel="stylesheet" href="css/style.css" />
+<title>Login — SessionShield</title>
+<link rel="stylesheet" href="css/global.css" />
 <link rel="stylesheet" href="css/login.css" />
 </head>
 <body>
   <div class="topbar">
-    <a href="index.html" class="brand">🛡 SocialShield <span class="brand-badge">Demo</span></a>
+    <a href="index.html" class="brand"><span class="shield">🛡</span> SessionShield</a>
   </div>
 
   <div class="login-wrap">
-    <div class="card fade-in">
-      <h2 class="mt-0">Log in</h2>
+    <div class="login-header fade-in">
+      <div class="shield">🛡</div>
+      <h2 class="mt-0">Welcome to SessionShield Social</h2>
+    </div>
+
+    <div class="card pop-in">
       <div id="loginError" class="login-error"></div>
       <form id="loginForm">
         <label for="username">Username</label>
@@ -24,11 +28,16 @@
         <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">Login</button>
       </form>
 
-      <div class="demo-creds">
-        <strong>Demo User A</strong>
-        <div class="cred-row"><span>alice</span><span>alice123</span></div>
-        <strong style="display:block; margin-top:10px;">Demo User B</strong>
-        <div class="cred-row"><span>bob</span><span>bob123</span></div>
+      <div class="demo-accounts">
+        <div class="label">Demo Accounts</div>
+        <div class="demo-account-row">
+          <span><strong>USER A</strong><br/><span class="who">alice</span></span>
+          <span class="mono">alice123</span>
+        </div>
+        <div class="demo-account-row">
+          <span><strong>USER B</strong><br/><span class="who">bob</span></span>
+          <span class="mono">bob123</span>
+        </div>
       </div>
     </div>
   </div>

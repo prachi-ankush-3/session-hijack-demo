@@ -1,10 +1,10 @@
 /**
- * SocialShield Demo — Session Hijacking Risk Demonstration
+ * SessionShield — Session Hijacking Risk Demonstration
  *
- * EDUCATIONAL / LOCAL DEMO ONLY.
- * All "sessions" below are fake identifiers created and controlled entirely
- * by this Node.js application. Nothing here touches real browser cookies,
- * real authentication tokens, or any external website.
+ * 🔬 EDUCATIONAL SECURITY SIMULATION.
+ * Every "session" below is a fake identifier created and controlled entirely
+ * by this Node.js server. Nothing here reads real browser cookies, real
+ * authentication tokens, or talks to any external website.
  */
 
 const express = require("express");
@@ -19,24 +19,29 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 // ---------------------------------------------------------------------------
-// In-memory demo state
+// Demo data
 // ---------------------------------------------------------------------------
 
 const USERS_PATH = path.join(__dirname, "data", "users.json");
 const users = JSON.parse(fs.readFileSync(USERS_PATH, "utf-8"));
 
-/** sessionId -> { sessionId, userId, username, createdAt, lastActivity, status } */
+/**
+ * sessionId -> {
+ *   sessionId, userId, status ("ACTIVE" | "REVOKED"),
+ *   simulationState ("NORMAL" | "COMPROMISED"),
+ *   createdAt, lastActivity
+ * }
+ */
 let sessions = {};
 
 /**
- * Two simulated "browser slots" used only on the attack-demo page:
+ * Two simulated browser slots used by the attack-demo page:
  *   A -> Alice's demo browser
  *   B -> Bob's demo browser
- * Each slot points at whichever sessionId that browser is currently using.
- * This is what lets us demonstrate a session ID being reused by a different
- * browser/user.
+ * Each points at whichever sessionId that browser is currently using —
+ * this is what lets a session created for Alice be "reused" by Bob's browser.
  */
-let browserContext = { A: null, B: null };
+let browserSlots = { A: null, B: null };
 
 let events = [];
 function logEvent(text, level = "info") {
@@ -45,20 +50,18 @@ function logEvent(text, level = "info") {
 
 function resetDemoState() {
   sessions = {};
-  browserContext = { A: null, B: null };
+  browserSlots = { A: null, B: null };
   events = [];
-  logEvent("Demo reset. All sessions cleared.", "info");
 }
 
 resetDemoState();
-events = []; // start with a clean timeline for the first run
 
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
 
 function makeSessionId() {
-  return "DEMO_SESSION_" + crypto.randomBytes(5).toString("hex").toUpperCase();
+  return "DEMO_SESSION_" + crypto.randomBytes(4).toString("hex").toUpperCase();
 }
 
 function publicUser(userId) {
@@ -70,27 +73,20 @@ function publicUser(userId) {
 
 function publicSession(session) {
   if (!session) return null;
-  return {
-    sessionId: session.sessionId,
-    userId: session.userId,
-    username: session.username,
-    createdAt: session.createdAt,
-    lastActivity: session.lastActivity,
-    status: session.status
-  };
+  const { sessionId, userId, status, simulationState, createdAt, lastActivity } = session;
+  return { sessionId, userId, status, simulationState, createdAt, lastActivity };
+}
+
+function isImpersonated() {
+  const s = sessions[browserSlots.B];
+  return !!(s && s.status === "ACTIVE" && s.userId !== "bob");
 }
 
 function currentRisk() {
-  const compromisedActive = Object.values(sessions).some(
-    (s) => s.status === "SIMULATED_COMPROMISED"
-  );
-  const injected = browserContext.B && sessions[browserContext.B] &&
-    sessions[browserContext.B].userId !== "bob" &&
-    sessions[browserContext.B].status !== "REVOKED";
-
-  if (injected) return { score: 95, level: "CRITICAL" };
-  if (compromisedActive) return { score: 60, level: "ELEVATED" };
-  return { score: 10, level: "LOW" };
+  if (isImpersonated()) return { score: 95, level: "CRITICAL", delta: 85 };
+  const anyCompromised = Object.values(sessions).some((s) => s.simulationState === "COMPROMISED");
+  if (anyCompromised) return { score: 55, level: "ELEVATED", delta: 45 };
+  return { score: 10, level: "LOW", delta: 0 };
 }
 
 // ---------------------------------------------------------------------------
@@ -112,42 +108,34 @@ app.post("/api/login", (req, res) => {
   const session = {
     sessionId,
     userId: username,
-    username,
+    status: "ACTIVE",
+    simulationState: "NORMAL",
     createdAt: now,
-    lastActivity: now,
-    status: "ACTIVE"
+    lastActivity: now
   };
   sessions[sessionId] = session;
 
   if (browser === "A" || browser === "B") {
-    browserContext[browser] = sessionId;
+    browserSlots[browser] = sessionId;
   }
 
   logEvent(`${user.name} logged in. Demo session ${sessionId} created.`, "success");
 
-  res.json({
-    success: true,
-    user: publicUser(username),
-    session: publicSession(session)
-  });
+  res.json({ success: true, user: publicUser(username), session: publicSession(session) });
 });
 
-// GET /api/session/current?sessionId=...   OR ?browser=A|B
+// GET /api/session/current?sessionId=...  OR  ?browser=A|B
 app.get("/api/session/current", (req, res) => {
   let sessionId = req.query.sessionId;
-  if (!sessionId && req.query.browser) {
-    sessionId = browserContext[req.query.browser];
-  }
+  if (!sessionId && req.query.browser) sessionId = browserSlots[req.query.browser];
+
   const session = sessions[sessionId];
-  if (!session || session.status === "REVOKED") {
+  if (!session || session.status !== "ACTIVE") {
     return res.status(404).json({ success: false, error: "No active demo session" });
   }
   session.lastActivity = new Date().toISOString();
-  res.json({
-    success: true,
-    session: publicSession(session),
-    user: publicUser(session.userId)
-  });
+
+  res.json({ success: true, session: publicSession(session), user: publicUser(session.userId) });
 });
 
 // GET /api/session/:id
@@ -157,19 +145,14 @@ app.get("/api/session/:id", (req, res) => {
   res.json({ success: true, session: publicSession(session) });
 });
 
-// GET /api/session/browser/:slot  (A or B) — convenience for attack-demo UI
+// GET /api/session/browser/:slot  (A or B) — convenience for the attack-demo panels
 app.get("/api/session/browser/:slot", (req, res) => {
   const slot = req.params.slot;
-  const sessionId = browserContext[slot];
-  const session = sessions[sessionId];
-  if (!session) {
+  const session = sessions[browserSlots[slot]];
+  if (!session || session.status !== "ACTIVE") {
     return res.json({ success: true, session: null, user: null });
   }
-  res.json({
-    success: true,
-    session: publicSession(session),
-    user: publicUser(session.userId)
-  });
+  res.json({ success: true, session: publicSession(session), user: publicUser(session.userId) });
 });
 
 // ---------------------------------------------------------------------------
@@ -181,48 +164,50 @@ app.post("/api/session/simulate-compromise", (req, res) => {
   const { sessionId } = req.body || {};
   const session = sessions[sessionId];
   if (!session) return res.status(404).json({ success: false, error: "Session not found" });
+  if (session.status !== "ACTIVE") {
+    return res.status(400).json({ success: false, error: "Session is not active" });
+  }
 
-  session.status = "SIMULATED_COMPROMISED";
-  logEvent(`Demo session ${sessionId} (owner: ${session.username}) marked SIMULATED COMPROMISED`, "danger");
+  session.simulationState = "COMPROMISED";
+  logEvent(`⚠ Demo session ${sessionId} (owner: ${session.userId}) marked as COMPROMISED`, "danger");
 
-  res.json({ success: true, session: publicSession(session) });
+  res.json({ success: true, session: publicSession(session), risk: currentRisk() });
 });
 
-// POST /api/session/inject-demo  { browser: "B", sessionId }
+// POST /api/session/inject-demo  { browser: "A"|"B", sessionId }
 app.post("/api/session/inject-demo", (req, res) => {
   const { browser, sessionId } = req.body || {};
   if (browser !== "A" && browser !== "B") {
     return res.status(400).json({ success: false, error: "Invalid browser slot" });
   }
+
   const session = sessions[sessionId];
   if (!session) {
-    return res.status(400).json({
-      success: false,
-      error: "That session ID was not issued by this demo application"
-    });
+    return res.status(400).json({ success: false, error: "That session ID was not issued by this demo application" });
   }
-  if (session.status === "REVOKED") {
-    return res.status(400).json({ success: false, error: "That demo session has been revoked" });
+  if (session.status !== "ACTIVE") {
+    return res.status(400).json({ success: false, error: "That demo session is no longer active" });
+  }
+  if (session.simulationState !== "COMPROMISED") {
+    return res.status(400).json({ success: false, error: "Only a session marked COMPROMISED can be injected for this simulation" });
   }
 
-  const previousUser = browserContext[browser] && sessions[browserContext[browser]]
-    ? sessions[browserContext[browser]].username
+  const previousUserId = browserSlots[browser] && sessions[browserSlots[browser]]
+    ? sessions[browserSlots[browser]].userId
     : "(none)";
 
-  browserContext[browser] = sessionId;
+  browserSlots[browser] = sessionId;
 
-  const impersonated = session.username;
-  logEvent(
-    `Demo session ${sessionId} (owner: ${impersonated}) reused by User ${browser}'s demo browser (was: ${previousUser})`,
-    "danger"
-  );
-  logEvent(`🚨 Identity impersonation detected: User ${browser}'s browser is now treated as ${impersonated}`, "critical");
+  logEvent(`🔄 Demo session ${sessionId} (owner: ${session.userId}) reused by User ${browser}'s browser (was: ${previousUserId})`, "danger");
+  logEvent(`🚨 Identity changed: ${previousUserId} → ${session.userId}`, "critical");
+  logEvent(`🚨 Risk increased: 10 → 95`, "critical");
 
   res.json({
     success: true,
     session: publicSession(session),
     user: publicUser(session.userId),
     impersonated: true,
+    previousUserId,
     risk: currentRisk()
   });
 });
@@ -234,18 +219,19 @@ app.post("/api/session/revoke", (req, res) => {
   if (!session) return res.status(404).json({ success: false, error: "Session not found" });
 
   session.status = "REVOKED";
-  Object.keys(browserContext).forEach((slot) => {
-    if (browserContext[slot] === sessionId) browserContext[slot] = null;
+  Object.keys(browserSlots).forEach((slot) => {
+    if (browserSlots[slot] === sessionId) browserSlots[slot] = null;
   });
 
-  logEvent(`Demo session ${sessionId} revoked. It is no longer valid.`, "success");
-  res.json({ success: true, session: publicSession(session) });
+  logEvent(`🔒 Demo session ${sessionId} revoked. It is no longer valid.`, "success");
+  res.json({ success: true, session: publicSession(session), risk: currentRisk() });
 });
 
 // POST /api/demo/reset
 app.post("/api/demo/reset", (req, res) => {
   resetDemoState();
-  res.json({ success: true, message: "Demo reset successfully" });
+  logEvent("↻ Demo reset. All sessions cleared.", "info");
+  res.json({ success: true, message: "Demo Ready" });
 });
 
 // ---------------------------------------------------------------------------
@@ -263,6 +249,6 @@ app.get("/api/security/risk", (req, res) => {
 // ---------------------------------------------------------------------------
 
 app.listen(PORT, () => {
-  console.log(`SocialShield Demo running at http://localhost:${PORT}`);
-  console.log("EDUCATIONAL LOCAL DEMONSTRATION — no real accounts or cookies are used.");
+  console.log(`SessionShield running at http://localhost:${PORT}`);
+  console.log("🔬 EDUCATIONAL SECURITY SIMULATION — no real accounts or cookies are used.");
 });

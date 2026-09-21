@@ -1,0 +1,18 @@
+.result-hero {
+  text-align: center;
+  padding: 10px 0 20px;
+}
+.result-hero .big-icon { font-size: 2.4rem; }
+
+.risk-score-display {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+.risk-delta {
+  display: inline-block;
+  margin-left: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--danger);
+}

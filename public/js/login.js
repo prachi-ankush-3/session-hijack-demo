@@ -19,10 +19,9 @@ document.getElementById("loginForm").addEventListener("submit", async (e) => {
       return;
     }
 
-    // Store the fake demo session id locally so this "browser" remembers it.
-    // This is a demo-only identifier created by our own server, never a real cookie.
-    localStorage.setItem("demoSessionId", data.session.sessionId);
-    window.location.href = "dashboard.html";
+    // Fake demo session id, created by our own server — never a real cookie.
+    localStorage.setItem("sessionShieldSessionId", data.session.sessionId);
+    window.location.href = "app.html";
   } catch (err) {
     errorBox.textContent = "Could not reach the demo server.";
     errorBox.style.display = "block";

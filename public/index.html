@@ -3,54 +3,91 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SocialShield Demo</title>
-<link rel="stylesheet" href="css/style.css" />
-<style>
-  .hero { text-align: center; padding: 70px 20px 30px; }
-  .hero h1 { font-size: 2.4rem; margin-bottom: 6px; }
-  .hero p.sub { color: var(--text-2); font-size: 1.1rem; margin-top: 0; }
-  .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
-    margin: 40px 0;
-  }
-  .feature {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px;
-    text-align: center;
-  }
-  .feature .emoji { font-size: 1.8rem; }
-  .cta { text-align: center; margin-top: 30px; }
-</style>
+<title>SessionShield — Session Hijacking Risk Demonstration</title>
+<link rel="stylesheet" href="css/global.css" />
+<link rel="stylesheet" href="css/landing.css" />
 </head>
 <body>
   <div class="topbar">
-    <div class="brand">🛡 SocialShield <span class="brand-badge">Demo</span></div>
+    <div class="brand"><span class="shield">🛡</span> SessionShield</div>
+    <div class="nav-links">
+      <a href="login.html">Login</a>
+    </div>
   </div>
 
   <div class="container">
     <div class="hero fade-in">
-      <h1>SocialShield Demo</h1>
-      <p class="sub">Understanding Session Hijacking Risk</p>
-      <div class="warning-banner center" style="display:inline-block; margin-top: 18px;">
-        EDUCATIONAL LOCAL DEMONSTRATION — no real accounts, cookies, or websites involved.
+      <div class="shield-big">🛡</div>
+      <h1>SESSIONSHIELD</h1>
+      <p class="sub">
+        Session Hijacking<br/>Risk Demonstration
+      </p>
+      <p class="sub small">
+        Understand how compromised session identifiers can lead to account impersonation.
+      </p>
+
+      <div class="hero-actions">
+        <a href="login.html" class="btn btn-primary">🚀 Start Demo</a>
+        <button class="btn btn-outline" id="howItWorksBtn">ℹ How It Works</button>
       </div>
     </div>
 
-    <div class="feature-grid">
-      <div class="feature"><div class="emoji">🔐</div>Authentication</div>
-      <div class="feature"><div class="emoji">🪪</div>Session Management</div>
-      <div class="feature"><div class="emoji">⚠️</div>Session Hijacking Simulation</div>
-      <div class="feature"><div class="emoji">👤</div>Identity Impersonation</div>
-      <div class="feature"><div class="emoji">🛡</div>Security Awareness</div>
+    <div class="grid-4" style="margin-top:46px;">
+      <div class="feature-card">
+        <div class="icon">🔐</div>
+        <h4>Authentication</h4>
+        <p>Secure login demonstration</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">🪪</div>
+        <h4>Session Identity</h4>
+        <p>Application session tracking</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">⚠️</div>
+        <h4>Attack Simulation</h4>
+        <p>Controlled session compromise</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">👤</div>
+        <h4>Identity Impersonation</h4>
+        <p>Visual account takeover demonstration</p>
+      </div>
     </div>
 
-    <div class="cta">
-      <a href="login.html" class="btn btn-primary">Start Demo</a>
+    <div class="how-it-works" id="howItWorks">
+      <div class="card" style="margin-top:30px;">
+        <h3 class="mt-0">How It Works</h3>
+        <div class="explain-grid">
+          <div class="how-card">
+            <div class="step-num">1</div>
+            <h4 class="mt-0">Session Created</h4>
+            <p class="text-muted small">After login, the application associates a session identifier with the user.</p>
+          </div>
+          <div class="how-card">
+            <div class="step-num">2</div>
+            <h4 class="mt-0">Session Compromised</h4>
+            <p class="text-muted small">If the session identifier becomes exposed, another party could potentially reuse it.</p>
+          </div>
+          <div class="how-card">
+            <div class="step-num">3</div>
+            <h4 class="mt-0">Identity Impersonation</h4>
+            <p class="text-muted small">If the server accepts the compromised session, the application may associate the request with the original user.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="center" style="margin-top:40px;">
+      <span class="pill">🔬 LOCAL EDUCATIONAL DEMO</span>
     </div>
   </div>
+
+  <script>
+    document.getElementById("howItWorksBtn").addEventListener("click", () => {
+      const el = document.getElementById("howItWorks");
+      el.style.display = el.style.display === "none" || !el.style.display ? "block" : "none";
+    });
+  </script>
 </body>
 </html>

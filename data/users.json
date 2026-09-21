@@ -6,7 +6,12 @@
     "bio": "Computer Engineering Student",
     "followers": 245,
     "following": 180,
-    "posts": 12
+    "posts": 12,
+    "feed": [
+      "Just finished my Data Structures assignment! 💻",
+      "Excited for the ISC micro-project presentation tomorrow 🎓",
+      "Coffee + code = perfect Sunday ☕"
+    ]
   },
   "bob": {
     "username": "bob",
@@ -15,6 +20,11 @@
     "bio": "Technology Enthusiast",
     "followers": 180,
     "following": 220,
-    "posts": 8
+    "posts": 8,
+    "feed": [
+      "Trying out a new JavaScript framework this week 🚀",
+      "Great hackathon over the weekend, learned a lot!",
+      "Anyone else excited about the new cybersecurity elective?"
+    ]
   }
 }
