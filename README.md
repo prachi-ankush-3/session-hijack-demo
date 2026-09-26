@@ -5,6 +5,18 @@
 > 🔬 **Educational Security Simulation**
 > A local cybersecurity project that visually demonstrates how a compromised session identifier can lead to **identity impersonation**.
 
+
+---
+
+## 🌐 Live Demo
+
+> 🚀 **Deployed Project:**
+> **[Add your live deployment link here]**
+
+🔗 **Live Demo:** (https://session-hijack-demo.onrender.com)
+> Explore the SessionShield session hijacking security simulation.
+
+
 ---
 
 ## 🎯 What We Demonstrate
@@ -134,11 +146,8 @@ This project runs **only locally**.
 The session compromise is intentionally simulated using fake session IDs.
 
 ---
-## 🚀 Live Demo
 
-🔗 **[ssession-hijack-demo.onrender.com](https://session-hijack-demo.onrender.com)**
 
-> Explore the SessionShield session hijacking security simulation.
 
 
 ## 🔮 Next Phase
