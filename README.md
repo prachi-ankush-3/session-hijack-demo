@@ -13,7 +13,7 @@
 > 🚀 **Deployed Project:**
 > **[Add your live deployment link here]**
 
-🔗 **Live Demo:** (https://session-hijack-demo.onrender.com)
+🔗 **Live Demo:** https://session-hijack-demo.onrender.com
 > Explore the SessionShield session hijacking security simulation.
 
 
